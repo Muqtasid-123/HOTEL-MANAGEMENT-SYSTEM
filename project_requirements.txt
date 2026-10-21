@@ -1,0 +1,112 @@
+=====================================================================
+  Grand Horizon Resort — Hotel Management System
+  Project Requirements (requirements.txt)
+=====================================================================
+
+This file documents the software, runtime, and dependency requirements
+needed to run this project locally and in production.
+
+---------------------------------------------------------------------
+1. RUNTIME REQUIREMENTS
+---------------------------------------------------------------------
+  - Node.js        : v18.0.0 or higher (LTS recommended)
+  - npm            : v9.0.0 or higher (ships with Node.js)
+  - Browser        : Any modern browser (Chrome, Firefox, Edge, Safari)
+  - Bolt Database  : A free Bolt Database project (https://supabase.com)
+      • Postgres database
+      • Authentication (email/password)
+      • Row-Level Security (RLS)
+
+---------------------------------------------------------------------
+2. FRONTEND DEPENDENCIES (production)
+---------------------------------------------------------------------
+These are listed in package.json under "dependencies" and are
+installed automatically when you run `npm install`.
+
+  @supabase/supabase-js   ^2.57.4     Bolt Database client (database + auth)
+  lucide-react            ^0.446.0    Icon library
+  react                   ^18.3.1     UI library
+  react-dom               ^18.3.1     React DOM renderer
+
+---------------------------------------------------------------------
+3. DEV DEPENDENCIES (build / tooling)
+---------------------------------------------------------------------
+These are listed in package.json under "devDependencies".
+
+  @eslint/js                  ^9.9.1       ESLint core
+  @types/react                ^18.3.5      TypeScript types for React
+  @types/react-dom            ^18.3.0      TypeScript types for React DOM
+  @vitejs/plugin-react        ^5.1.1       Vite React plugin
+  autoprefixer                ^10.4.18     PostCSS autoprefixer
+  eslint                      ^9.9.1       Linter
+  eslint-plugin-react-hooks     ^5.1.0-rc.0  React hooks lint rules
+  eslint-plugin-react-refresh   ^0.4.11      React refresh lint rules
+  globals                     ^15.9.1      Global variables for ESLint
+  postcss                     ^8.4.35      CSS processing
+  tailwindcss                 ^3.4.1       Utility-first CSS framework
+  typescript                  ^5.5.3       Type checking
+  typescript-eslint           ^8.3.0       TypeScript ESLint plugin
+  vite                        ^7.3.7       Build tool + dev server
+
+---------------------------------------------------------------------
+4. ENVIRONMENT VARIABLES (.env)
+---------------------------------------------------------------------
+The app reads these variables via Vite's import.meta.env.
+Create a `.env` file by copying `.env.example` and filling in values.
+
+  VITE_SUPABASE_URL        Your Bolt Database project URL 
+                           (e.g. https://yourproject.supabase.co)
+  VITE_SUPABASE_ANON_KEY   Your Bolt Database anon (public) key 
+                           (found in Bolt Database dashboard → Settings → API)
+
+Note: NEVER commit the real `.env` file. Only `.env.example` is shared.
+The `.gitignore` file already excludes `.env`.
+
+---------------------------------------------------------------------
+5. DATABASE REQUIREMENTS (Bolt Database / Postgres)
+---------------------------------------------------------------------
+Run the three SQL migration files in order using the Bolt Database SQL Editor:
+
+  1. supabase/migrations/20261021074830_hotel_management_schema.sql
+     --> Creates all tables + enables Row-Level Security + policies
+
+  2. supabase/migrations/20261021075002_seed_hotel_data.sql
+     --> Seeds sample room types, rooms, and guests
+
+  3. supabase/migrations/20261021075055_create_demo_auth_users_v2.sql
+     --> Creates two demo staff login accounts
+
+Tables created:
+  - room_types        (public read, staff write)
+  - rooms             (public read, staff write)
+  - guests            (staff only)
+  - reservations      (staff only)
+  - invoices          (staff only)
+  - invoice_items     (staff only)
+  - booking_requests  (anon can insert, staff manage)
+
+---------------------------------------------------------------------
+6. DEMO LOGIN ACCOUNTS
+---------------------------------------------------------------------
+  Role   Email                     Password
+  ----   -----------------------   --------
+  Admin  admin@grandhorizon.com    admin123
+  Staff  staff@grandhorizon.com    staff123
+
+---------------------------------------------------------------------
+7. HOW TO INSTALL AND RUN
+---------------------------------------------------------------------
+  Step 1: npm install
+  Step 2: cp .env.example .env   (then fill in Bolt Database values)
+  Step 3: Run the 3 SQL migrations in Bolt Database SQL Editor
+  Step 4: npm run dev             (starts dev server at localhost:5173)
+
+---------------------------------------------------------------------
+8. AVAILABLE SCRIPTS
+---------------------------------------------------------------------
+  npm run dev        Start development server
+  npm run build      Type-check + build for production (outputs to dist/)
+  npm run preview    Preview the production build locally
+  npm run lint       Run ESLint
+  npm run typecheck  Run TypeScript type checking (no output files)
+=====================================================================
